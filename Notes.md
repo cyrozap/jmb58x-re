@@ -19,8 +19,8 @@ These notes reflect my current understanding of how everything works.
 - The following two bytes are the little-endian PCI vendor ID.
 - The next four bytes are never read.
 - The configuration sequence starts at byte 8.
-- The Option ROM is stored at a fixed offset in the flash (set by a
-  configuration instruction), after the configuration sequence.
+- The Option ROM is stored at an arbirtary, absolute offset in the flash, and
+  that offset is set by a configuration instruction.
 
 I'm not yet sure if the PCI device/vendor IDs are used as a magic to identify
 that the configuration sequence is present, or if it's used to set the IDs in
