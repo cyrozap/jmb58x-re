@@ -22,3 +22,19 @@ The JMB585 is a PCIe Gen3x2 5-port SATA 6Gb/s host controller.
 ## Reverse engineering notes
 
 See [Notes.md](Notes.md).
+
+
+## License
+
+Except where otherwise stated:
+
+* All software in this repository (e.g., tools for parsing and generating flash
+  images/configuration data, etc.) is made available under the
+  [Zero-Clause BSD (0BSD) license][license].
+* All copyrightable content that is not software (e.g., reverse engineering
+  notes, this README file, etc.) is licensed under the
+  [Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
+
+
+[license]: LICENSE.txt
+[cc-by-sa]: https://creativecommons.org/licenses/by-sa/4.0/
