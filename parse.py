@@ -46,7 +46,8 @@ def main():
     did, vid = struct.unpack_from('<HH', image, 0)
     print("PCI ID: {:04x}:{:04x}".format(vid, did))
 
-    header_data = image[8:]
+    offset = 8
+    header_data = image[offset:]
 
     print("Data        |  Instruction")
     for instr, data in struct.iter_unpack('<II', header_data):
@@ -57,8 +58,13 @@ def main():
         instr_hex = ' '.join([hex(int(n, 2)) for n in instr_split])
         print("0x{:08x}  |  0x{:08x}  [ {} ]  [ {} ]".format(data, instr, instr_bin, instr_hex))
 
+        offset += 8
+
         if instr & (1 << 27):
             break
+
+    if offset < len(image):
+        print("Header version: {}.{}.{}.{}".format(*struct.unpack_from('BBBB', image, offset)))
 
 
 if __name__ == "__main__":
