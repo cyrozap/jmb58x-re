@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: 0BSD
 
-# Copyright (C) 2022 by Forest Crossman <cyrozap@gmail.com>
+# Copyright (C) 2022-2023 by Forest Crossman <cyrozap@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for
 # any purpose with or without fee is hereby granted.
@@ -46,8 +46,7 @@ def main():
     did, vid = struct.unpack_from('<HH', image, 0)
     print("PCI ID: {:04x}:{:04x}".format(vid, did))
 
-    header = image[:0xc00]
-    header_data = header[8:]
+    header_data = image[8:]
 
     print("Data        |  Instruction")
     for instr, data in struct.iter_unpack('<II', header_data):
@@ -57,6 +56,9 @@ def main():
         instr_bin = ' '.join(instr_split)
         instr_hex = ' '.join([hex(int(n, 2)) for n in instr_split])
         print("0x{:08x}  |  0x{:08x}  [ {} ]  [ {} ]".format(data, instr, instr_bin, instr_hex))
+
+        if instr & (1 << 27):
+            break
 
 
 if __name__ == "__main__":
