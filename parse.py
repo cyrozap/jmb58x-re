@@ -56,7 +56,14 @@ def main():
         instr_split = split_bits("{:032b}".format(instr), [4, 4, 5, 9, 4, 4])
         instr_bin = ' '.join(instr_split)
         instr_hex = ' '.join([hex(int(n, 2)) for n in instr_split])
-        print("0x{:08x}  |  0x{:08x}  [ {} ]  [ {} ]".format(data, instr, instr_bin, instr_hex))
+        info = ""
+        if instr & (1 << 24):
+            info += "  |  "
+            info += "BAR5[0x{:04x}] <= 0x{:08x}".format(instr & 0x1fff, data)
+        elif instr & (1 << 27):
+            info += "  |  "
+            info += "Option ROM offset: 0x{:08x}".format(data)
+        print("0x{:08x}  |  0x{:08x}  [ {} ]  [ {} ]{}".format(data, instr, instr_bin, instr_hex, info))
 
         offset += 8
 
