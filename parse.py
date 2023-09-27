@@ -17,6 +17,7 @@
 
 
 import argparse
+import pathlib
 import struct
 
 
@@ -36,8 +37,12 @@ def split_bits(bits, splits=[]):
     return sections
 
 def main():
+    project_dir = pathlib.Path(__file__).resolve().parents[0]
+    default_data_dir = str(project_dir/"data")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("image", type=str, help="The JMB585 flash image.")
+    parser.add_argument("-d", "--data-dir", type=str, default=default_data_dir, help="The YAML data directory. Default is \"{}\"".format(default_data_dir))
     parser.add_argument("-c", "--ignore-counter", action="store_true", default=False, help="Set this flag to mask off the instruction counter (useful for diffs).")
     args = parser.parse_args()
 
@@ -49,6 +54,23 @@ def main():
     offset = 8
     header_data = image[offset:]
 
+    reg_names = []
+    try:
+        yaml_path = pathlib.Path(args.data_dir) / "regs-jmb58x.yaml"
+
+        import yaml
+        doc = yaml.safe_load(open(yaml_path, 'r'))
+        xdata = doc.get('registers', dict()).get('bar5', [])
+        for reg in xdata:
+            start = reg['start']
+            end = reg['end']
+            name = reg['name']
+            reg_names.append((start, end, name))
+    except FileNotFoundError:
+        pass
+    except ModuleNotFoundError:
+        pass
+
     print("Data        |  Instruction")
     for instr, data in struct.iter_unpack('<II', header_data):
         if args.ignore_counter:
@@ -59,7 +81,12 @@ def main():
         info = ""
         if instr & (1 << 24):
             info += "  |  "
-            info += "BAR5[0x{:04x}] <= 0x{:08x}".format(instr & 0x1fff, data)
+            formatted_name = ""
+            addr = instr & 0x1fff
+            for start, end, name in reg_names:
+                if addr == start:
+                    formatted_name = " ({})".format(name)
+            info += "BAR5[0x{:04x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
         elif instr & (1 << 27):
             info += "  |  "
             info += "Option ROM offset: 0x{:08x}".format(data)
