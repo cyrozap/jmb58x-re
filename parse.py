@@ -43,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--data-dir", type=str, default=default_data_dir, help="The YAML data directory. Default is \"{}\"".format(default_data_dir))
     parser.add_argument("-c", "--ignore-counter", action="store_true", default=False, help="Set this flag to mask off the instruction counter (useful for diffs).")
-    parser.add_argument("image", type=str, help="The JMB585 flash image.")
+    parser.add_argument("image", type=str, help="The JMB58x flash image.")
     args = parser.parse_args()
 
     image = open(args.image, 'rb').read()

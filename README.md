@@ -1,6 +1,8 @@
-# JMB585 Reverse Engineering
+# JMB58x Reverse Engineering
 
-The JMB585 is a PCIe Gen3x2 5-port SATA 6Gb/s host controller.
+The JMicron JMB582 and JMB585 are SATA 6Gb/s host controllers with PCIe Gen3
+interfaces. The JMB582 has one PCIe Gen3 lane and two SATA ports, while the
+JMB585 has two PCIe Gen3 lanes and five SATA ports.
 
 
 ## Quick start
