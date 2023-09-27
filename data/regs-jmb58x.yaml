@@ -1,0 +1,165 @@
+meta:
+  chip: JMB58x
+  license: CC-BY-SA-4.0
+
+registers:
+  bar5:
+    - name: SPI_CFG0
+      start: 0x00B4
+      end: 0x00B7
+      bits:
+        - name: SCK_CSN_DELAY
+          start: 0
+          end: 3
+          permissions: RW
+          notes: |
+            SCK-to-CSN delay, in 25 MHz clock cycles, minus 1.
+
+            * 0: 1 cycle
+            * ...
+            * 15: 16 cycles
+        - name: CLK_DIV
+          start: 4
+          end: 7
+          permissions: RW
+          notes: |
+            SPI clock divisor, divided by 2, minus 1. To calculate the SPI base
+            clock from a `CLK_DIV` value, use the following equation:
+            `SPI base clock = 25 MHz / (2 * (CLK_DIV + 1))`
+
+            To calculate the value of `CLK_DIV` needed to generate a particular
+            SPI base clock, use the following equation:
+            `CLK_DIV = 25 MHz / (2 * SPI base clock) - 1`
+
+            The minimum and maximum SPI base clocks are 781.25 kHz and 12.5 MHz,
+            respectively.
+        - name: SPI_UNK
+          start: 8
+          end: 15
+          permissions: RW
+          notes: |
+            Unknown bits, normally set to `0x80`.
+        - name: ADDR_TX_EN
+          start: 16
+          end: 16
+          permissions: RW
+          notes: |
+            When this bit is set, `ADDR_LEN` number of bytes will be transmitted
+            from the `SPI_ADDRESS` register in the SPI transaction. When this
+            bit is cleared, zero bytes will be transmitted from the
+            `SPI_ADDRESS` register.
+        - name: DUMMY_TX_EN
+          start: 17
+          end: 17
+          permissions: RW
+          notes: |
+            When this bit is set, a dummy byte with the value zero will be
+            transmitted after the address in the SPI transaction. This byte
+            counts towards neither the number of address bytes nor the number of
+            data bytes. This functionality is useful for commands like
+            `RDSFDP (0x5A)`, which require a dummy byte to be transmitted after
+            the address.
+        - name: DATA_TX_EN
+          start: 18
+          end: 18
+          permissions: RW
+          notes: |
+            When this bit is set, `DATA_LEN` number of bytes will be transmitted
+            from the `SPI_DATA` register in the SPI transaction. When this bit
+            is cleared, zero bytes will be transmitted from the `SPI_DATA`
+            register.
+        - name: DATA_RX_EN
+          start: 19
+          end: 19
+          permissions: RW
+          notes: |
+            When this bit is set, `DATA_LEN` number of bytes will be received
+            into the `SPI_DATA` register in the SPI transaction. When this bit
+            is cleared, zero bytes will be received into the `SPI_DATA`
+            register.
+        - name: ADDR_LEN
+          start: 20
+          end: 21
+          permissions: RW
+          notes: |
+            The number of address bytes to transmit from the `SPI_ADDRESS`
+            register, minus 1, if `ADDR_TX_EN` is set.
+
+            * 0: 1 Byte
+            * 1: 2 Bytes
+            * 2: 3 Bytes
+            * 3: 4 Bytes
+        - name: DATA_LEN
+          start: 22
+          end: 23
+          permissions: RW
+          notes: |
+            The number of data bytes to receive into or transmit from the
+            `SPI_DATA` register, minus 1. If `DATA_TX_EN` is set, this is the
+            number of bytes to transmit. If `DATA_RX_EN` is set, this is the
+            number of bytes to receive.
+
+            * 0: 1 Byte
+            * 1: 2 Bytes
+            * 2: 3 Bytes
+            * 3: 4 Bytes
+        - name: CMD
+          start: 24
+          end: 31
+          permissions: RW
+          notes: |
+            SPI command byte.
+      notes: |
+        SPI configuration register 0.
+    - name: SPI_CFG1
+      start: 0x00B8
+      end: 0x00BB
+      bits:
+        - name: CLK_MUL
+          start: 0
+          end: 1
+          permissions: RW
+          notes: |
+            SPI clock multiplier. The SPI base clock is multiplied by the number
+            indicated to generate the SPI clock.
+
+            * 0: Multiply by 1.
+            * 1: Multiply by 3.
+            * 2: Multiply by 6.
+            * 3: Multiply by 9.
+      notes: |
+        SPI configuration register 1.
+    - name: SPI_ADDRESS
+      start: 0x00C0
+      end: 0x00C3
+      bits:
+        - name: ZERO
+          start: 0
+          end: 1
+          permissions: RO
+          notes: |
+            Always reads as zero.
+        - name: WORD_INDEX
+          start: 2
+          end: 23
+          permissions: RW
+          notes: |
+            The index of the 32-bit word to read/write. In other words, these
+            bits represent bits 2 through 23 of the byte address.
+        - name: ZERO
+          start: 24
+          end: 31
+          permissions: RO
+          notes: |
+            Always reads as zero.
+      notes: |
+        SPI address register. The highest eight bits and the lowest two bits of
+        this register are all hardwired to zero, so while the SPI controller is
+        capable of transmitting up to four bytes from this register, only 24-bit
+        addresses aligned to 32-bit word offsets are supported.
+    - name: SPI_DATA
+      start: 0x00CC
+      end: 0x00CF
+      permissions: RW
+      notes: |
+        SPI data register. Accessing this register starts an SPI transaction.

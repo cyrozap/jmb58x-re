@@ -40,3 +40,13 @@ instruction word are sometimes an address and sometimes data, depending on the
 instruction, but I don't yet know for certain. Also, I'm not sure the
 instruction word is an "instruction" so much as it is just muxing between some
 internal data/configuration ports.
+
+
+## Reading and Writing Flash over PCIe
+
+JMB58x chips each contain an SPI controller, whose registers are located in the
+AHCI Vendor Specific registers range (0xA0 to 0xFF, inclusive) in the MMIO space
+of PCI BAR 5. The details of these registers are documented in
+[data/regs-jmb58x.yaml](data/regs-jmb58x.yaml).
+
+TODO: Explain how to use the SPI controller.
