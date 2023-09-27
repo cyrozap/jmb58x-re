@@ -11,6 +11,7 @@ These notes reflect my current understanding of how everything works.
   I haven't yet figured out how to use it.
 - The chip has several GPIO pins, whose functions can be set by the
   configuration sequence.
+- 25 MHz crystal oscillator.
 
 
 ## Flash Layout
