@@ -21,9 +21,11 @@ JMB585 has two PCIe Gen3 lanes and five SATA ports.
 
 1. Install dependencies.
 2. Dump the flash from your JMB585 card.
-3. Parse and print the configuration flash with `./tools/parse.py ...`, where `...` is
-   the name of the binary you got when you dumped your JMB585 card's flash.
-4. Run `make doc` to generate XHTML documentation in [doc/generated](doc/generated).
+3. Parse and print the configuration flash with `./tools/parse.py ...`, where
+   `...` is the name of the binary you got when you dumped your JMB585 card's
+   flash.
+4. Run `make doc` to generate XHTML documentation in
+   [doc/generated](doc/generated).
 
 
 ### Obtaining a flash image
