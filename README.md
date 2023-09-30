@@ -11,6 +11,10 @@ JMB585 has two PCIe Gen3 lanes and five SATA ports.
 ### Software dependencies
 
 * Python 3
+* Documentation generator:
+  * [lxml][lxml]
+  * [Python-Markdown][python-markdown]
+  * [PyYAML][pyyaml]
 
 
 ### Procedure
@@ -19,6 +23,7 @@ JMB585 has two PCIe Gen3 lanes and five SATA ports.
 2. Dump the flash from your JMB585 card.
 3. Parse and print the configuration flash with `./tools/parse.py ...`, where `...` is
    the name of the binary you got when you dumped your JMB585 card's flash.
+4. Run `make doc` to generate XHTML documentation in [doc/generated](doc/generated).
 
 
 ## Reverse engineering notes
@@ -38,5 +43,8 @@ Except where otherwise stated:
   [Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
 
 
+[lxml]: https://lxml.de/
+[python-markdown]: https://python-markdown.github.io/
+[pyyaml]: https://pyyaml.org/
 [license]: LICENSE.txt
 [cc-by-sa]: https://creativecommons.org/licenses/by-sa/4.0/

@@ -47,6 +47,8 @@ internal data/configuration ports.
 JMB58x chips each contain an SPI controller, whose registers are located in the
 AHCI Vendor Specific registers range (0xA0 to 0xFF, inclusive) in the MMIO space
 of PCI BAR 5. The details of these registers are documented in
-[../data/regs-jmb58x.yaml](../data/regs-jmb58x.yaml).
+[generated/regs-jmb58x.xhtml](generated/regs-jmb58x.xhtml) (run `make doc` in
+the root directory of this repository to generate the XHTML documentation from
+[../data/regs-jmb58x.yaml](../data/regs-jmb58x.yaml)).
 
 TODO: Explain how to use the SPI controller.
