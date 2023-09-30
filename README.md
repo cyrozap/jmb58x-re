@@ -23,7 +23,7 @@ JMB585 has two PCIe Gen3 lanes and five SATA ports.
 
 ## Reverse engineering notes
 
-See [Notes.md](Notes.md).
+See [doc/Notes.md](doc/Notes.md).
 
 
 ## License
