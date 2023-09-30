@@ -26,6 +26,13 @@ JMB585 has two PCIe Gen3 lanes and five SATA ports.
 4. Run `make doc` to generate XHTML documentation in [doc/generated](doc/generated).
 
 
+### Obtaining a flash image
+
+In addition to dumping the flash of a JMB58x device, a flash image and
+proprietary flash tool for JMB58x devices can be downloaded from
+[here][station-drivers].
+
+
 ## Reverse engineering notes
 
 See [doc/Notes.md](doc/Notes.md).
@@ -46,5 +53,6 @@ Except where otherwise stated:
 [lxml]: https://lxml.de/
 [python-markdown]: https://python-markdown.github.io/
 [pyyaml]: https://pyyaml.org/
+[station-drivers]: https://www.station-drivers.com/index.php/en/component/remository/Drivers/Jmicron/JMB585-Sata-Controller/Jmicron-JMB585-Sata-Controller-Firmware-Version-255.00.00.20/lang,en-gb/
 [license]: LICENSE.txt
 [cc-by-sa]: https://creativecommons.org/licenses/by-sa/4.0/
