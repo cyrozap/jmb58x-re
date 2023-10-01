@@ -391,7 +391,8 @@ def gen_xhtml(filename, doc):
             subprocess.check_output(["git", "rev-list", "--count", "HEAD"]).rstrip().decode('utf-8'),
             subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).rstrip().decode('utf-8'),
         )
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as err:
+        print("Warning: Failed to get git revision:", err, file=sys.stderr)
         git_rev = "UNKNOWN"
     date_string = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
     footer = ET.SubElement(body, 'p')
