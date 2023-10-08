@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js" integrity="sha384-+R8PTzDXzivdjpxOqwVwRhPS9dlske7tKAjwj0O0Kr361gKY5d2Xe6Osl+faRLT7" crossorigin="anonymous"></script>
   </head>
   <body>
     <div id="status"><p>Waiting for script to begin execution...</p></div>
@@ -21,9 +20,22 @@
 
         addMessage(statusDiv, "Script is running!");
 
-        const pyodideLoader = loadPyodide();
+        const pyodideScriptLoader = new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.onload = resolve;
+          script.onerror = reject;
+          script.async = true;
+          script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
+          script.integrity = "sha384-+R8PTzDXzivdjpxOqwVwRhPS9dlske7tKAjwj0O0Kr361gKY5d2Xe6Osl+faRLT7";
+          script.crossOrigin = "anonymous";
+          document.body.appendChild(script);
+        });
+
         const pyodideLoaderText = addMessage(statusDiv, "Loading Pyodide...");
-        const pyodide = await pyodideLoader.then((ret) => {
+
+        await pyodideScriptLoader;
+
+        const pyodide = await loadPyodide().then((ret) => {
           pyodideLoaderText.nodeValue = pyodideLoaderText.nodeValue + " Done!";
           return ret;
         });
