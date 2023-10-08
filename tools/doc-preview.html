@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js" integrity="sha384-+R8PTzDXzivdjpxOqwVwRhPS9dlske7tKAjwj0O0Kr361gKY5d2Xe6Osl+faRLT7" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="status"><p>Waiting for script to begin execution...</p></div>
+    <script type="text/javascript">
+      "use strict";
+
+      function addMessage(element, message) {
+        const text = document.createTextNode(message);
+        const para = document.createElement("p");
+        para.appendChild(text);
+        element.appendChild(para);
+        return text;
+      }
+
+      async function main() {
+        const statusDiv = document.getElementById("status");
+
+        addMessage(statusDiv, "Script is running!");
+
+        const pyodideLoader = loadPyodide();
+        const pyodideLoaderText = addMessage(statusDiv, "Loading Pyodide...");
+        const pyodide = await pyodideLoader.then((ret) => {
+          pyodideLoaderText.nodeValue = pyodideLoaderText.nodeValue + " Done!";
+          return ret;
+        });
+
+        const micropipLoader = pyodide.loadPackage("micropip");
+        const micropipLoaderText = addMessage(statusDiv, "Loading micropip...");
+        await micropipLoader.then(() => {
+          micropipLoaderText.nodeValue = micropipLoaderText.nodeValue + " Done!";
+        });
+
+        const micropip = pyodide.pyimport("micropip");
+
+        const installer = micropip.install(["lxml==4.9.3", "Markdown==3.4.4", "PyYAML==6.0.1"]);
+        const dataFileDownloader = fetch("https://raw.githubusercontent.com/cyrozap/jmb58x-re/master/data/regs-jmb58x.yaml");
+        const generatorScriptDownloader = fetch("https://raw.githubusercontent.com/cyrozap/jmb58x-re/master/tools/generate_docs.py");
+        const installerText = addMessage(statusDiv, "Loading Python dependencies...");
+        const dataFileLoaderText = addMessage(statusDiv, "Loading data file...");
+        const generatorScriptLoaderText = addMessage(statusDiv, "Loading generator script...");
+
+        const [install, dataFile, generatorScript] = await Promise.all([
+          installer.then(() => {
+            installerText.nodeValue = installerText.nodeValue + " Done!";
+          }),
+          dataFileDownloader.then((response) => {
+            dataFileLoaderText.nodeValue = dataFileLoaderText.nodeValue + " Done!";
+            return response.text();
+          }),
+          generatorScriptDownloader.then((response) => {
+            generatorScriptLoaderText.nodeValue = generatorScriptLoaderText.nodeValue + " Done!";
+            return response.text();
+          })
+        ]);
+
+        const generatorText = addMessage(statusDiv, "Generating XHTML...");
+        pyodide.FS.mkdir("data");
+        pyodide.FS.writeFile("data/regs-jmb58x.yaml", dataFile, { encoding: "utf8" });
+        pyodide.FS.writeFile("generate_docs.py", generatorScript, { encoding: "utf8" });
+        pyodide.runPython(`
+          import sys
+          from generate_docs import *
+
+          infile = "data/regs-jmb58x.yaml"
+
+          doc = yaml.safe_load(open(infile, 'r'))
+
+          doc_valid = validate(doc)
+          if not doc_valid:
+            print("Error: Document \\"{}\\" invalid.".format(infile))
+            sys.exit(1)
+
+          xhtml = gen_xhtml(infile, doc)
+        `);
+        const output = new TextDecoder().decode(pyodide.globals.get("xhtml").toJs());
+        generatorText.nodeValue = generatorText.nodeValue + " Done!";
+
+        addMessage(statusDiv, "Rendering XHTML...");
+        document.open();
+        document.write(output);
+        document.close();
+      }
+
+      main();
+    </script>
+    <noscript>JavaScript is required to view this page.</noscript>
+  </body>
+</html>
