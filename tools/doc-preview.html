@@ -49,8 +49,12 @@
         const micropip = pyodide.pyimport("micropip");
 
         const installer = micropip.install(["lxml==4.9.3", "Markdown==3.4.4", "PyYAML==6.0.1"]);
-        const dataFileDownloader = fetch("https://raw.githubusercontent.com/cyrozap/jmb58x-re/master/data/regs-jmb58x.yaml");
+
+        const dataUrl = "https://raw.githubusercontent.com/cyrozap/jmb58x-re/master/data/regs-jmb58x.yaml";
+        const dataFileDownloader = fetch(dataUrl);
+
         const generatorScriptDownloader = fetch("https://raw.githubusercontent.com/cyrozap/jmb58x-re/master/tools/generate_docs.py");
+
         const installerText = addMessage(statusDiv, "Loading Python dependencies...");
         const dataFileLoaderText = addMessage(statusDiv, "Loading data file...");
         const generatorScriptLoaderText = addMessage(statusDiv, "Loading generator script...");
@@ -86,7 +90,7 @@
             print("Error: Document \\"{}\\" invalid.".format(infile))
             sys.exit(1)
 
-          xhtml = gen_xhtml(infile, doc)
+          xhtml = gen_xhtml("${dataUrl}", doc)
         `);
         const output = new TextDecoder().decode(pyodide.globals.get("xhtml").toJs());
         generatorText.nodeValue = generatorText.nodeValue + " Done!";
