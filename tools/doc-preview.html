@@ -33,7 +33,10 @@
 
         const pyodideLoaderText = addMessage(statusDiv, "Loading Pyodide...");
 
-        await pyodideScriptLoader;
+        const pyodideLoader = await pyodideScriptLoader.catch((err) => {
+          pyodideLoaderText.nodeValue = pyodideLoaderText.nodeValue + " Failed!";
+          throw new Error("Failed to load Pyodide!");
+        });
 
         const pyodide = await loadPyodide().then((ret) => {
           pyodideLoaderText.nodeValue = pyodideLoaderText.nodeValue + " Done!";
@@ -66,10 +69,16 @@
         const [install, dataFile, commitsMeta, generatorScript] = await Promise.all([
           installer.then(() => {
             installerText.nodeValue = installerText.nodeValue + " Done!";
+          }).catch((err) => {
+            installerText.nodeValue = installerText.nodeValue + " Failed!";
+            throw new Error(err);
           }),
           dataFileDownloader.then((response) => {
             dataFileLoaderText.nodeValue = dataFileLoaderText.nodeValue + " Done!";
             return response.text();
+          }).catch((err) => {
+            dataFileLoaderText.nodeValue = dataFileLoaderText.nodeValue + " Failed!";
+            throw new Error(err);
           }),
           commitsMetaDownloader.then((response) => {
             commitsMetaLoaderText.nodeValue = commitsMetaLoaderText.nodeValue + " Done!";
@@ -84,6 +93,9 @@
           generatorScriptDownloader.then((response) => {
             generatorScriptLoaderText.nodeValue = generatorScriptLoaderText.nodeValue + " Done!";
             return response.text();
+          }).catch((err) => {
+            generatorScriptLoaderText.nodeValue = generatorScriptLoaderText.nodeValue + " Failed!";
+            throw new Error(err);
           })
         ]);
 
