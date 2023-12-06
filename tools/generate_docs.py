@@ -107,7 +107,7 @@ def markdown_subelement(parent, tag, md):
     element = ET.fromstring("<{}>{}</{}>".format(tag, xhtml, tag))
     parent.append(element)
 
-def gen_xhtml(filename, doc):
+def gen_xhtml(filename, doc, git_rev=None):
     html = ET.Element('html', {
         ET.QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation"): "http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd",
         ET.QName("http://www.w3.org/XML/1998/namespace", "lang"): "en",
@@ -386,14 +386,15 @@ def gen_xhtml(filename, doc):
             break
 
     ET.SubElement(body, 'hr')
-    try:
-        git_rev = "r{}.g{}".format(
-            subprocess.check_output(["git", "rev-list", "--count", "HEAD"]).rstrip().decode('utf-8'),
-            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).rstrip().decode('utf-8'),
-        )
-    except (OSError, subprocess.CalledProcessError) as err:
-        print("Warning: Failed to get git revision:", err, file=sys.stderr)
-        git_rev = "UNKNOWN"
+    if not git_rev:
+        try:
+            git_rev = "r{}.g{}".format(
+                subprocess.check_output(["git", "rev-list", "--count", "HEAD"]).rstrip().decode('utf-8'),
+                subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).rstrip().decode('utf-8'),
+            )
+        except (OSError, subprocess.CalledProcessError) as err:
+            print("Warning: Failed to get git revision:", err, file=sys.stderr)
+            git_rev = "UNKNOWN"
     date_string = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     footer = ET.SubElement(body, 'p')
     ET.SubElement(footer, 'i').text = "Generated from {} version {} on {}.".format(filename, git_rev, date_string)
