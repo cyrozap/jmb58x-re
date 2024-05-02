@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: 0BSD
 
-# Copyright (C) 2022-2023 by Forest Crossman <cyrozap@gmail.com>
+# Copyright (C) 2022-2024 by Forest Crossman <cyrozap@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for
 # any purpose with or without fee is hereby granted.
@@ -54,7 +54,11 @@ def main():
     offset = 8
     header_data = image[offset:]
 
-    reg_names = []
+    reg_names = {
+        "bar5": [],
+        "cfg": [],
+        "reg": [],
+    }
     try:
         yaml_path = pathlib.Path(args.data_dir) / "regs-jmb58x.yaml"
 
@@ -65,7 +69,7 @@ def main():
             start = reg['start']
             end = reg['end']
             name = reg['name']
-            reg_names.append((start, end, name))
+            reg_names['bar5'].append((start, end, name))
     except FileNotFoundError:
         pass
     except ModuleNotFoundError:
@@ -83,10 +87,26 @@ def main():
             info += "  |  "
             formatted_name = ""
             addr = instr & 0x1fff
-            for start, end, name in reg_names:
+            for start, end, name in reg_names["bar5"]:
                 if addr == start:
                     formatted_name = " ({})".format(name)
             info += "BAR5[0x{:04x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
+        elif instr & (1 << 25):
+            info += "  |  "
+            formatted_name = ""
+            addr = 4 * (instr & 0x3ff)
+            for start, end, name in reg_names["cfg"]:
+                if addr == start:
+                    formatted_name = " ({})".format(name)
+            info += "CFG[0x{:03x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
+        elif instr & (1 << 26):
+            info += "  |  "
+            formatted_name = ""
+            addr = instr & 0x7ffff
+            for start, end, name in reg_names["reg"]:
+                if addr == start:
+                    formatted_name = " ({})".format(name)
+            info += "REG[0x{:04x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
         elif instr & (1 << 27):
             info += "  |  "
             info += "Option ROM offset: 0x{:08x}".format(data)
