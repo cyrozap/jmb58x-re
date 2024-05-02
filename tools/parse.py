@@ -37,7 +37,7 @@ def split_bits(bits, splits=[]):
     return sections
 
 def main():
-    project_dir = pathlib.Path(__file__).resolve().parents[0]
+    project_dir = pathlib.Path(__file__).resolve().parents[1]
     default_data_dir = str(project_dir/"data")
 
     parser = argparse.ArgumentParser()
