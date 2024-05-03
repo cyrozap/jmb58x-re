@@ -49,12 +49,13 @@ def main():
 
         import yaml
         doc = yaml.safe_load(open(yaml_path, 'r'))
-        xdata = doc.get('registers', dict()).get('bar5', [])
-        for reg in xdata:
-            start = reg['start']
-            end = reg['end']
-            name = reg['name']
-            reg_names['bar5'].append((start, end, name))
+        registers = doc.get('registers', dict())
+        for space in reg_names.keys():
+            for reg in registers.get(space, []):
+                start = reg['start']
+                end = reg['end']
+                name = reg['name']
+                reg_names[space].append((start, end, name))
     except FileNotFoundError:
         pass
     except ModuleNotFoundError:
