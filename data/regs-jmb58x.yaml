@@ -199,3 +199,39 @@ registers:
       permissions: RW
       notes: |
         SPI data register. Accessing this register starts an SPI transaction.
+
+  reg:
+    - name: PCIE_LINK_CAPABILITIES
+      start: 0x1000
+      end: 0x1000
+      bits:
+        - name: MAX_LINK_SPEED
+          start: 0
+          end: 1
+          permissions: RW
+          notes: |
+            The maximum PCIe link speed to report to the host in the "Max Link
+            Speed" field of the "Link Capabilities" register. The value in this
+            field will also set the "Supported Link Speeds Vector" field in the
+            "Link Capabilities 2" register to show that all link speeds up to
+            and including the selected maximum link speed are supported.
+
+            Note: Setting the value of this field to "3" will only set the "Max
+            Link Speed" field of the "Link Capabilities" register to 16 GT/s and
+            will not add the 16 GT/s link speed to the "Supported Link Speeds
+            Vector" field in the "Link Capabilities 2" register.
+
+            * 0: 2.5 GT/s
+            * 1: 5 GT/s
+            * 2: 8 GT/s
+            * 3: 16 GT/s
+        - name: MAX_LINK_WIDTH
+          start: 2
+          end: 2
+          permissions: RW
+          notes: |
+            The maximum PCIe link width to report to the host in the "Maximum
+            Link Width" field of the "Link Capabilities" register.
+
+            * 0: x1
+            * 1: x2
