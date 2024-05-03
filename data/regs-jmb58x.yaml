@@ -152,6 +152,23 @@ registers:
         controller. So while the SPI controller is capable of transmitting up to
         four bytes from this register, only 24-bit addresses aligned to 32-bit
         word offsets are supported.
+    - name: PCI_CFG_DATA
+      start: 0x00C4
+      end: 0x00C7
+      permissions: RW
+      notes: |
+        PCI configuration space data register. Accessing this register starts a
+        transaction on the PCI configuration space bus, reading or writing a PCI
+        configuration space register at the address specified in the
+        `BUS_ADDRESS` register.
+    - name: REG_DATA
+      start: 0x00C8
+      end: 0x00CB
+      permissions: RW
+      notes: |
+        Internal register bus data register. Accessing this register starts a
+        transaction on the internal register bus, reading or writing an internal
+        register at the address specified in the `BUS_ADDRESS` register.
     - name: SPI_DATA
       start: 0x00CC
       end: 0x00CF
