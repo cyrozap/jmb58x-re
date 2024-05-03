@@ -153,7 +153,7 @@ def gen_xhtml(filename, doc, git_rev=None):
             ET.SubElement(body, 'hr')
             reg_name = register.get('name', "")
             addr_format = "0x{:04X}"
-            if region_name in ("cfg", "sfr"):
+            if region_name == "cfg":
                 addr_format = "0x{:02X}"
             start = register.get('start')
             addr_string = ""
