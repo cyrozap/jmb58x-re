@@ -60,7 +60,7 @@ def main():
     except ModuleNotFoundError:
         pass
 
-    print("Data        |  Instruction")
+    print("Instruction  |  Data")
     for instr, data in struct.iter_unpack('<II', header_data):
         if args.ignore_counter:
             instr = instr & 0x0fffffff
@@ -101,7 +101,7 @@ def main():
                 if bytes_enabled & (1 << i):
                     mask |= 0xff << (8 * i)
 
-        print("0x{:08x} (mask: 0x{:08x})  |  0x{:08x}{}".format(data, mask, instr, info))
+        print(" 0x{:08x}  |  0x{:08x} (mask: 0x{:08x}){}".format(instr, data, mask, info))
 
         offset += 8
 
