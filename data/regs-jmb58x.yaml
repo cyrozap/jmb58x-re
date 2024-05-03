@@ -45,9 +45,9 @@ registers:
           permissions: RW
           notes: |
             When this bit is set, `ADDR_LEN` number of bytes will be transmitted
-            from the `SPI_ADDRESS` register in the SPI transaction. When this
+            from the `BUS_ADDRESS` register in the SPI transaction. When this
             bit is cleared, zero bytes will be transmitted from the
-            `SPI_ADDRESS` register.
+            `BUS_ADDRESS` register.
         - name: DUMMY_TX_EN
           start: 17
           end: 17
@@ -82,7 +82,7 @@ registers:
           end: 21
           permissions: RW
           notes: |
-            The number of address bytes to transmit from the `SPI_ADDRESS`
+            The number of address bytes to transmit from the `BUS_ADDRESS`
             register, minus 1, if `ADDR_TX_EN` is set.
 
             * 0: 1 Byte
@@ -129,23 +129,17 @@ registers:
             * 3: Multiply by 9.
       notes: |
         SPI configuration register 1.
-    - name: SPI_ADDRESS
+    - name: BUS_ADDRESS
       start: 0x00C0
       end: 0x00C3
       bits:
-        - name: ZERO
+        - name: ADDRESS
           start: 0
-          end: 1
-          permissions: RO
-          notes: |
-            Always reads as zero.
-        - name: WORD_INDEX
-          start: 2
           end: 23
           permissions: RW
           notes: |
-            The index of the 32-bit word to read/write. In other words, these
-            bits represent bits 2 through 23 of the byte address.
+            The address for the next bus access. When used for SPI access, the
+            lowest two bits are transmitted as zeros.
         - name: ZERO
           start: 24
           end: 31
@@ -153,10 +147,11 @@ registers:
           notes: |
             Always reads as zero.
       notes: |
-        SPI address register. The highest eight bits and the lowest two bits of
-        this register are all hardwired to zero, so while the SPI controller is
-        capable of transmitting up to four bytes from this register, only 24-bit
-        addresses aligned to 32-bit word offsets are supported.
+        Bus address register. The highest eight bits of this register are
+        hardwired to zero, and the lowest two bits are read as zero by the SPI
+        controller. So while the SPI controller is capable of transmitting up to
+        four bytes from this register, only 24-bit addresses aligned to 32-bit
+        word offsets are supported.
     - name: SPI_DATA
       start: 0x00CC
       end: 0x00CF
