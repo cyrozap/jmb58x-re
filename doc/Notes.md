@@ -30,16 +30,45 @@ the chip.
 
 ## The Configuration Sequence
 
-The "configuration sequence" is a sequence of pairs of 32-bit little-endian
-words. The first word in each pair is the "instruction" word, while the second
-is a "data" word. The highest four bits of the instruction word (bits 31-28)
-contain a "sequence number", which starts at 1, increments by one for each
-instruction word, and simply wraps around to zero after sequence number 15
-(0xf). The other bits I'm not so sure of--I think the low 16 bits of the
-instruction word are sometimes an address and sometimes data, depending on the
-instruction, but I don't yet know for certain. Also, I'm not sure the
-instruction word is an "instruction" so much as it is just muxing between some
-internal data/configuration ports.
+- The "configuration sequence" is a sequence of pairs of 32-bit little-endian
+  words.
+- The first word in each pair is the "instruction" word, while the second is a
+  "data" word.
+- The highest four bits of the instruction word (bits 31-28) contain a
+  "sequence number", which starts at 1, increments by one for each instruction
+  word, and simply wraps around to zero after sequence number 15 (0xf).
+- The next highest four bits of the instruction word (bits 27-24) indicate the
+  memory space to write the data word to.
+  - 1: PCI BAR5 MMIO
+  - 2: PCI configuration space
+  - 4: Internal registers
+  - 8: Option ROM flash address register (appears to only access this one
+    register)
+- The next highest four bits of the instruction word (bits 23-20) are the byte
+  enable bits for the data word.
+  - If a bit is set, the corresponding byte from the data word is written to the
+    memory space.
+  - If a bit is cleared, the corresponding byte from the data word is not
+    written to the memory space.
+  - Bit 20 corresponds to the byte at the lowest address in the data word.
+  - Bit 23 corresponds to the byte at the highest address in the data word.
+- The next highest bit of the instruction word (bit 19) is the write enable.
+  - If this bit is set, the write to the memory space is enabled according to
+    the byte enable bits.
+  - If this bit is cleared, the write to the memory space is disabled
+    completely.
+- The remaining 19 bits of the instruction word (bits 18-0) are the address to
+  write the data word to in the indicated memory space.
+  - Writes to PCI BAR5 MMIO use byte addresses and are 32-bit word-aligned (all
+    addresses are a multiple of four).
+  - Writes to PCI configuration space use register indices (not byte addresses).
+  - Writes to internal registers have various addressing modes depending on the
+    address:
+    - Writes below 0x1000 use byte addresses and are 32-bit word-aligned (all
+      addresses are a multiple of four).
+    - Writes at or above 0x1000 use register indices (not byte addresses).
+- The configuration sequence is terminated by a write to the Option ROM flash
+  address register (memory space 8).
 
 
 ## Reading and Writing Flash over PCIe
