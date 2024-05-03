@@ -31,7 +31,7 @@ from lxml import etree as ET
 
 
 REGION_NAMES = {
-    "pci": "PCI Configuration",
+    "cfg": "PCI Configuration",
     "bar5": "PCI BAR5",
 }
 
@@ -153,7 +153,7 @@ def gen_xhtml(filename, doc, git_rev=None):
             ET.SubElement(body, 'hr')
             reg_name = register.get('name', "")
             addr_format = "0x{:04X}"
-            if region_name in ("pci", "sfr"):
+            if region_name in ("cfg", "sfr"):
                 addr_format = "0x{:02X}"
             start = register.get('start')
             addr_string = ""
