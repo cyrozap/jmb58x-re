@@ -2,6 +2,30 @@ meta:
   chip: JMB58x
   license: CC-BY-SA-4.0
 
+ranges:
+  - name: REGION_0
+    start: 0x0000
+    end: 0x0FFF
+    permissions: RW
+    notes: |
+      Register addresses are aligned on 32-bit boundaries. That is, the first
+      register in this region is at address 0x0000, the second at address
+      0x0004, etc.
+  - name: REGION_1
+    start: 0x1000
+    end: 0x10FF
+    permissions: RW
+    notes: |
+      Register addresses are indices. That is, the first register in this region
+      is at address 0x1000, the second at address 0x1001, etc.
+  - name: REGION_2
+    start: 0x40000
+    end: 0x40FFF
+    permissions: RW
+    notes: |
+      Register addresses are indices. That is, the first register in this region
+      is at address 0x40000, the second at address 0x40001, etc.
+
 registers:
   bar5:
     - name: SPI_CFG0

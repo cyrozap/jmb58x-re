@@ -46,10 +46,21 @@ PERMISSIONS = {
 }
 
 def validate(doc):
-    unknown_keys = set(doc.keys()).difference(set(['meta', 'registers']))
+    unknown_keys = set(doc.keys()).difference(set(['meta', 'ranges', 'registers']))
     if unknown_keys:
         print("Error: Invalid keys in document: {}".format(unknown_keys))
         return False
+
+    ranges = doc.get('ranges', list())
+    if type(ranges) is not list:
+        print("Error: \"ranges\" is not a list.")
+        return False
+
+    for i, region in enumerate(ranges):
+        unknown_keys = set(region.keys()).difference(set(['name', 'start', 'end', 'permissions', 'notes']))
+        if unknown_keys:
+            print("Error: Invalid keys in ranges[{}]: {}".format(i, unknown_keys))
+            return False
 
     registers = doc.get('registers', dict())
     if type(registers) is not dict:
@@ -121,13 +132,40 @@ def gen_xhtml(filename, doc, git_rev=None):
     chip = meta.get('chip', "UNKNOWN")
 
     title = ET.SubElement(head, 'title')
-    title.text = "{} Register Manual".format(chip)
+    title.text = "{} Memory Map and Register Manual".format(chip)
 
     style = ET.SubElement(head, 'style')
     style.text = gen_css()
 
     heading = ET.SubElement(body, 'h1')
     heading.text = title.text
+
+    ET.SubElement(body, 'h2').text = "Internal Registers Memory Map"
+    ranges_memory_map = ET.SubElement(body, 'table')
+    ranges_memory_map_header = ET.SubElement(ranges_memory_map, 'tr')
+    for header in ["Start", "End", "Size", "Name", "Permissions", "Notes"]:
+        ET.SubElement(ranges_memory_map_header, 'th').text = header
+
+    ranges = doc.get('ranges', list())
+    for region in ranges:
+        tr = ET.SubElement(ranges_memory_map, 'tr')
+        start = region.get('start')
+        start_text = ""
+        if start is not None:
+            start_text = "0x{:04X}".format(start)
+        ET.SubElement(tr, 'td').text = start_text
+        end = region.get('end')
+        end_text = ""
+        if end is not None:
+            end_text = "0x{:04X}".format(end)
+        ET.SubElement(tr, 'td').text = end_text
+        size_text = ""
+        if start is not None and end is not None:
+            size_text = "0x{:04X}".format(end + 1 - start)
+        ET.SubElement(tr, 'td').text = size_text
+        ET.SubElement(tr, 'td').text = region.get('name', "")
+        ET.SubElement(tr, 'td').text = region.get('permissions', "")
+        markdown_subelement(tr, 'td', region.get('notes', ""))
 
     ET.SubElement(body, 'h2').text = "Register Permissions"
     permissions = ET.SubElement(body, 'table')
