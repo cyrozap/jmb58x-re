@@ -83,6 +83,7 @@ def main():
         instr_bin = ' '.join(instr_split)
         instr_hex = ' '.join([hex(int(n, 2)) for n in instr_split])
         info = ""
+
         if instr & (1 << 24):
             info += "  |  "
             formatted_name = ""
@@ -110,7 +111,15 @@ def main():
         elif instr & (1 << 27):
             info += "  |  "
             info += "Option ROM offset: 0x{:08x}".format(data)
-        print("0x{:08x}  |  0x{:08x}  [ {} ]  [ {} ]{}".format(data, instr, instr_bin, instr_hex, info))
+
+        mask = 0
+        if instr & (1 << 19):
+            bytes_enabled = (instr >> 20) & 0xf
+            for i in range(4):
+                if bytes_enabled & (1 << i):
+                    mask |= 0xff << (8 * i)
+
+        print("0x{:08x} (mask: 0x{:08x})  |  0x{:08x}  [ {} ]  [ {} ]{}".format(data, mask, instr, instr_bin, instr_hex, info))
 
         offset += 8
 
