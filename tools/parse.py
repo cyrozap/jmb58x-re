@@ -21,21 +21,6 @@ import pathlib
 import struct
 
 
-def split_bits(bits, splits=[]):
-    if sum(splits) > 32:
-        raise ValueError("Sum of splits > 32: {}".format(sum(splits)))
-
-    sections = []
-
-    prev = 0
-    for split in splits:
-        sections.append(bits[prev:prev+split])
-        prev += split
-
-    sections.append(bits[prev:])
-
-    return sections
-
 def main():
     project_dir = pathlib.Path(__file__).resolve().parents[1]
     default_data_dir = str(project_dir/"data")
@@ -79,9 +64,6 @@ def main():
     for instr, data in struct.iter_unpack('<II', header_data):
         if args.ignore_counter:
             instr = instr & 0x0fffffff
-        instr_split = split_bits("{:032b}".format(instr), [4, 4, 5, 9, 4, 4])
-        instr_bin = ' '.join(instr_split)
-        instr_hex = ' '.join([hex(int(n, 2)) for n in instr_split])
         info = ""
 
         if instr & (1 << 24):
@@ -119,7 +101,7 @@ def main():
                 if bytes_enabled & (1 << i):
                     mask |= 0xff << (8 * i)
 
-        print("0x{:08x} (mask: 0x{:08x})  |  0x{:08x}  [ {} ]  [ {} ]{}".format(data, mask, instr, instr_bin, instr_hex, info))
+        print("0x{:08x} (mask: 0x{:08x})  |  0x{:08x}{}".format(data, mask, instr, info))
 
         offset += 8
 
