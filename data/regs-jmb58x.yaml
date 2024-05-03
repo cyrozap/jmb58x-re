@@ -159,7 +159,7 @@ registers:
       notes: |
         PCI configuration space data register. Accessing this register starts a
         transaction on the PCI configuration space bus, reading or writing a PCI
-        configuration space register at the address specified in the
+        configuration space register at the register index specified in the
         `BUS_ADDRESS` register.
     - name: REG_DATA
       start: 0x00C8
