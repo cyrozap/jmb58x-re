@@ -33,6 +33,7 @@ from lxml import etree as ET
 REGION_NAMES = {
     "cfg": "PCI Configuration",
     "bar5": "PCI BAR5",
+    "reg": "Internal Registers",
 }
 
 PERMISSIONS = {
