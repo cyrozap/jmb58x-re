@@ -154,7 +154,7 @@ def gen_xhtml(filename, doc, git_rev=None):
             reg_name = register.get('name', "")
             addr_format = "0x{:04X}"
             if region_name == "cfg":
-                addr_format = "0x{:02X}"
+                addr_format = "0x{:03X}"
             start = register.get('start')
             addr_string = ""
             if start is not None:
