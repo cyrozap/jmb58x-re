@@ -200,6 +200,22 @@ registers:
       notes: |
         SPI data register. Accessing this register starts an SPI transaction.
 
+  cfg:
+    - name: PCI_MSI_CAP
+      start: 0x0090
+      end: 0x00A7
+      permissions: RW
+      notes: |
+        PCI MSI Capability. See the PCIe Base Specification for more
+        information.
+    - name: PCIE_L1_PM_SUBSTATES_ECAP
+      start: 0x0900
+      end: 0x090F
+      permissions: RW
+      notes: |
+        PCIe L1 PM Substates Extended Capability. See the PCIe Base
+        Specification for more information.
+
   reg:
     - name: PCIE_LINK_CAPABILITIES
       start: 0x1000
