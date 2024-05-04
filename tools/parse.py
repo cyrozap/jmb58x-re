@@ -61,6 +61,20 @@ def main():
     except ModuleNotFoundError:
         pass
 
+    def get_reg_name(space, addr):
+        for start, end, name in reg_names[space]:
+            reg_size = end + 1 - start
+            if reg_size <= 4:
+                if start == addr:
+                    return name
+                elif start < addr and addr <= end:
+                    return "{}[{}]".format(name, addr - start)
+            else:
+                if start <= addr and addr <= end:
+                    return "{}[{}]".format(name, addr - start)
+
+        return ""
+
     print("Instruction  |  Data")
     for instr, data in struct.iter_unpack('<II', header_data):
         if args.ignore_counter:
@@ -69,27 +83,24 @@ def main():
 
         if instr & (1 << 24):
             info += "  |  "
-            formatted_name = ""
             addr = instr & 0x1fff
-            for start, end, name in reg_names["bar5"]:
-                if addr == start:
-                    formatted_name = " ({})".format(name)
+            formatted_name = get_reg_name("bar5", addr)
+            if formatted_name:
+                formatted_name = " ({})".format(formatted_name)
             info += "BAR5[0x{:04x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
         elif instr & (1 << 25):
             info += "  |  "
-            formatted_name = ""
             addr = 4 * (instr & 0x3ff)
-            for start, end, name in reg_names["cfg"]:
-                if addr == start:
-                    formatted_name = " ({})".format(name)
+            formatted_name = get_reg_name("cfg", addr)
+            if formatted_name:
+                formatted_name = " ({})".format(formatted_name)
             info += "CFG[0x{:03x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
         elif instr & (1 << 26):
             info += "  |  "
-            formatted_name = ""
             addr = instr & 0x7ffff
-            for start, end, name in reg_names["reg"]:
-                if addr == start:
-                    formatted_name = " ({})".format(name)
+            formatted_name = get_reg_name("reg", addr)
+            if formatted_name:
+                formatted_name = " ({})".format(formatted_name)
             info += "REG[0x{:04x}]{} <= 0x{:08x}".format(addr, formatted_name, data)
         elif instr & (1 << 27):
             info += "  |  "
