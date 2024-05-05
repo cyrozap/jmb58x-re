@@ -85,4 +85,57 @@ preview of the generated register documentation can be found
 TODO: Explain how to use the SPI controller.
 
 
+## Configuration and Debug over SPI
+
+In addition to the SPI controller port connected to the flash, the JMB58x also
+has an SPI peripheral port that can be used by another SPI controller to access
+the three memory spaces inside the JMB58x: PCI BAR5 MMIO, PCI configuration
+space, and internal registers.
+
+Unlike the controller port, which is on GPIO pins 1-5, this port appears to use
+GPIO pins 12-15, and is only available after being configured by either the host
+over PCIe or the configuration sequence in flash. The specific register writes
+needed to enable this are currently unknown.
+
+Once the port is available, commands can be sent to it to read and write the
+previosuly-identified memory spaces, as well as to perform several other
+functions. The commands I've found so far are defined as follows:
+
+- Write/Read Memory
+  - Command
+    - `B`: Command byte
+      - `Bits [7:4]`: Memory space type
+        - 1: PCI BAR5 MMIO
+        - 2: PCI configuration space
+        - 4: Internal registers
+      - `Bits [3:1]`: 1
+      - `Bit [0]`: Read-not-Write
+        - 0: Write
+        - 1: Read
+    - `3B`: Byte/write enable flags and 19-bit address to write/read
+      - `B`: Byte/write enable flags and high address bits
+        - Write:
+          - `Bits [7:4]`: Byte enable for data bytes `[3:0]`
+          - `Bit [3]`: Write enable
+        - Read:
+          - `Bits [7:3]`: Zero
+        - `Bits [2:0]`: Address bits `[18:16]`
+      - `B`: Address bits `[15:8]`
+      - `B`: Address bits `[7:0]`
+  - Response
+    - `B`: Dummy byte (always zero)
+    - `<I`: Data word
+- Read ID
+  - Command
+    - `B`: 0x9F
+  - Response
+    - `<I`: Device ID (should be 0x197b0585)
+
+There are also several commands that generate responses from the chip, but for
+which I don't know their functions. Further investigation of these commands is
+needed:
+
+- 0xE1 through 0xEC
+
+
 [htmlpreview]: https://htmlpreview.github.io/?https://github.com/cyrozap/jmb58x-re/blob/master/tools/doc-preview.html
