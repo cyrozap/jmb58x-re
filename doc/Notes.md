@@ -123,7 +123,7 @@ functions. The commands I've found so far are defined as follows:
       - `B`: Address bits `[15:8]`
       - `B`: Address bits `[7:0]`
     - `<I`: Data word (writes only)
-  - Response
+  - Response (reads only)
     - `B`: Dummy byte (always zero)
     - `<I`: Data word
 - Read ID
