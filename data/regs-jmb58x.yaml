@@ -253,6 +253,16 @@ registers:
         Specification for more information.
 
   reg:
+    - name: PCIE_IMPEDANCE0
+      start: 0x28
+      end: 0x2B
+      notes: |
+        PCIe impedance?
+    - name: PCIE_IMPEDANCE1
+      start: 0x428
+      end: 0x42B
+      notes: |
+        PCIe impedance?
     - name: PCIE_LINK_CAPABILITIES
       start: 0x1000
       end: 0x1000
@@ -287,3 +297,29 @@ registers:
 
             * 0: x1
             * 1: x2
+    - name: PCIE_PRESET_VALUE
+      start: 0x1034
+      end: 0x1034
+      bits:
+        - name: LANE0
+          start: 0
+          end: 3
+          permissions: RW
+          notes: |
+            PCIe Lane 0 (or 1?) Gen 3 preset.
+        - name: LANE1
+          start: 4
+          end: 7
+          permissions: RW
+          notes: |
+            PCIe Lane 1 (or 0?) Gen 3 preset.
+    - name: PCIE_PRESET_ENABLE
+      start: 0x1035
+      end: 0x1035
+      bits:
+        - name: ENABLE
+          start: 0
+          end: 0
+          permissions: RW
+          notes: |
+            Set bit to enable the PCIe Gen 3 preset value, clear bit to disable.
