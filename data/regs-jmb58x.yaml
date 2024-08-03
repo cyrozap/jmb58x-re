@@ -28,6 +28,42 @@ ranges:
 
 registers:
   bar5:
+    - name: GPIO_DATA
+      start: 0x00A8
+      end: 0x00AB
+      bits:
+        - name: DATA_IN
+          start: 11
+          end: 15
+          permissions: RO?
+          notes: |
+            Read the input states of `GPIO[15:11]`?
+        - name: DATA_OUT
+          start: 27
+          end: 31
+          permissions: RW
+          notes: |
+            Read or set the output states of `GPIO[15:11]`?
+      notes: |
+        GPIO data register.
+    - name: GPIO_CFG
+      start: 0x00AC
+      end: 0x00AF
+      bits:
+        - name: OUTPUT_ENABLE
+          start: 11
+          end: 15
+          permissions: RW
+          notes: |
+            Enable output on `GPIO[15:11]`.
+        - name: PULLUP_ENABLE
+          start: 27
+          end: 31
+          permissions: RW
+          notes: |
+            Enable pull-ups on `GPIO[15:11]`.
+      notes: |
+        GPIO configuration register.
     - name: SPI_CFG0
       start: 0x00B4
       end: 0x00B7
