@@ -323,3 +323,308 @@ registers:
           permissions: RW
           notes: |
             Set bit to enable the PCIe Gen 3 preset value, clear bit to disable.
+    - name: SATA_PHY_SSC
+      start: 0x40002
+      end: 0x40002
+      bits:
+        - name: SSC_DISABLE
+          start: 4
+          end: 4
+          permissions: RW
+          notes: |
+            Set this bit to disable Spread Spectrum Clocking (SSC), clear this bit to enable it.
+    - name: SATA_PHY_P0_GEN3_AMP
+      start: 0x40004
+      end: 0x40004
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 3 mode of SATA port 0.
+    - name: SATA_PHY_P0_CTLE
+      start: 0x4000B
+      end: 0x4000B
+      notes: |
+        Continuous Time Linear Equalization (CTLE) control for SATA port 0.
+    - name: SATA_PHY_P1_GEN3_AMP
+      start: 0x40011
+      end: 0x40011
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 3 mode of SATA port 1.
+    - name: SATA_PHY_P1_CTLE
+      start: 0x40018
+      end: 0x40018
+      notes: |
+        Continuous Time Linear Equalization (CTLE) control for SATA port 1.
+    - name: SATA_PHY_P2_GEN3_AMP
+      start: 0x4001E
+      end: 0x4001E
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 3 mode of SATA port 2.
+    - name: SATA_PHY_P2_CTLE
+      start: 0x40025
+      end: 0x40025
+      notes: |
+        Continuous Time Linear Equalization (CTLE) control for SATA port 2.
+    - name: SATA_PHY_P3_GEN3_AMP
+      start: 0x4002B
+      end: 0x4002B
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 3 mode of SATA port 3.
+    - name: SATA_PHY_P3_CTLE
+      start: 0x40032
+      end: 0x40032
+      notes: |
+        Continuous Time Linear Equalization (CTLE) control for SATA port 3.
+    - name: SATA_PHY_P4_GEN3_AMP
+      start: 0x40038
+      end: 0x40038
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 3 mode of SATA port 4.
+    - name: SATA_PHY_P4_CTLE
+      start: 0x4003F
+      end: 0x4003F
+      notes: |
+        Continuous Time Linear Equalization (CTLE) control for SATA port 4.
+    - name: SATA_PHY_P0_GEN2_AMP
+      start: 0x40073
+      end: 0x40073
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 2 mode of SATA port 0.
+    - name: SATA_PHY_P0_GEN1_AMP
+      start: 0x40074
+      end: 0x40074
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 1 mode of SATA port 0.
+    - name: SATA_PHY_P1_GEN2_AMP
+      start: 0x40075
+      end: 0x40075
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 2 mode of SATA port 1.
+    - name: SATA_PHY_P1_GEN1_AMP
+      start: 0x40076
+      end: 0x40076
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 1 mode of SATA port 1.
+    - name: SATA_PHY_P2_GEN2_AMP
+      start: 0x40077
+      end: 0x40077
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 2 mode of SATA port 2.
+    - name: SATA_PHY_P2_GEN1_AMP
+      start: 0x40078
+      end: 0x40078
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 1 mode of SATA port 2.
+    - name: SATA_PHY_P3_GEN2_AMP
+      start: 0x40079
+      end: 0x40079
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 2 mode of SATA port 3.
+    - name: SATA_PHY_P3_GEN1_AMP
+      start: 0x4007A
+      end: 0x4007A
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 1 mode of SATA port 3.
+    - name: SATA_PHY_P4_GEN2_AMP
+      start: 0x4007B
+      end: 0x4007B
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 2 mode of SATA port 4.
+    - name: SATA_PHY_P4_GEN1_AMP
+      start: 0x4007C
+      end: 0x4007C
+      bits:
+        - name: TX_AMPLITUDE
+          start: 0
+          end: 4
+          permissions: RW
+          notes: |
+            Tx amplitude.
+        - name: TX_DEEMPHASIS
+          start: 5
+          end: 25
+          permissions: RW
+          notes: |
+            Tx de-emphasis.
+      notes: |
+        Amplifier control for the Gen 1 mode of SATA port 4.

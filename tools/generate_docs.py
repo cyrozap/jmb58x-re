@@ -210,6 +210,9 @@ def gen_xhtml(filename, doc, git_rev=None):
             if start is not None and end is not None:
                 size = end + 1 - start
             max_bits = size * 8
+            if region_name == "reg" and ((start >> 18) & 1):
+                size = 4
+                max_bits = 32
             ET.SubElement(body, 'p').text = "Size: {} byte{}".format(size, "s" if size > 1 else "")
             markdown_subelement(body, 'div', register.get('notes', ""))
             if max_bits > 64:
