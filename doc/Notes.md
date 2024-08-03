@@ -126,6 +126,14 @@ functions. The commands I've found so far are defined as follows:
   - Response (reads only)
     - `B`: Dummy byte (always zero)
     - `<I`: Data word
+  - Notes
+    - These write/read commands MUST NOT be used to access the following PCI
+      BAR5 registers:
+      - `0x00C8`: `REG_DATA`
+      - `0x00CC`: `SPI_DATA`
+    - Accessing those registers will cause some bus to lock up, resulting in the
+      same value being transmitted out over the SPI bus for all subsequent
+      command responses.
 - Read ID
   - Command
     - `B`: 0x9F
