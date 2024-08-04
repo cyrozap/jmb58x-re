@@ -235,6 +235,41 @@ registers:
       permissions: RW
       notes: |
         SPI data register. Accessing this register starts an SPI transaction.
+    - name: AHCI_P0SCTL
+      start: 0x012C
+      end: 0x012F
+      permissions: RW
+      notes: |
+        AHCI Port 0 Serial ATA Control. See the Serial ATA AHCI Specification
+        for details (PxSCTL).
+    - name: AHCI_P1SCTL
+      start: 0x01AC
+      end: 0x01AF
+      permissions: RW
+      notes: |
+        AHCI Port 1 Serial ATA Control. See the Serial ATA AHCI Specification
+        for details (PxSCTL).
+    - name: AHCI_P2SCTL
+      start: 0x022C
+      end: 0x022F
+      permissions: RW
+      notes: |
+        AHCI Port 2 Serial ATA Control. See the Serial ATA AHCI Specification
+        for details (PxSCTL).
+    - name: AHCI_P3SCTL
+      start: 0x02AC
+      end: 0x02AF
+      permissions: RW
+      notes: |
+        AHCI Port 3 Serial ATA Control. See the Serial ATA AHCI Specification
+        for details (PxSCTL).
+    - name: AHCI_P4SCTL
+      start: 0x032C
+      end: 0x032F
+      permissions: RW
+      notes: |
+        AHCI Port 4 Serial ATA Control. See the Serial ATA AHCI Specification
+        for details (PxSCTL).
 
   cfg:
     - name: PCI_MSI_CAP
