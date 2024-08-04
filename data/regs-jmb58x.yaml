@@ -256,11 +256,13 @@ registers:
     - name: PCIE_IMPEDANCE0
       start: 0x28
       end: 0x2B
+      permissions: RW
       notes: |
         PCIe impedance?
     - name: PCIE_IMPEDANCE1
       start: 0x428
       end: 0x42B
+      permissions: RW
       notes: |
         PCIe impedance?
     - name: PCIE_LINK_CAPABILITIES
@@ -354,6 +356,7 @@ registers:
     - name: SATA_PHY_P0_CTLE
       start: 0x4000B
       end: 0x4000B
+      permissions: RW
       notes: |
         Continuous Time Linear Equalization (CTLE) control for SATA port 0.
     - name: SATA_PHY_P1_GEN3_AMP
@@ -377,6 +380,7 @@ registers:
     - name: SATA_PHY_P1_CTLE
       start: 0x40018
       end: 0x40018
+      permissions: RW
       notes: |
         Continuous Time Linear Equalization (CTLE) control for SATA port 1.
     - name: SATA_PHY_P2_GEN3_AMP
@@ -400,6 +404,7 @@ registers:
     - name: SATA_PHY_P2_CTLE
       start: 0x40025
       end: 0x40025
+      permissions: RW
       notes: |
         Continuous Time Linear Equalization (CTLE) control for SATA port 2.
     - name: SATA_PHY_P3_GEN3_AMP
@@ -423,6 +428,7 @@ registers:
     - name: SATA_PHY_P3_CTLE
       start: 0x40032
       end: 0x40032
+      permissions: RW
       notes: |
         Continuous Time Linear Equalization (CTLE) control for SATA port 3.
     - name: SATA_PHY_P4_GEN3_AMP
@@ -446,6 +452,7 @@ registers:
     - name: SATA_PHY_P4_CTLE
       start: 0x4003F
       end: 0x4003F
+      permissions: RW
       notes: |
         Continuous Time Linear Equalization (CTLE) control for SATA port 4.
     - name: SATA_PHY_P0_GEN2_AMP
