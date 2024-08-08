@@ -37,7 +37,13 @@ proprietary flash tool for JMB58x devices can be downloaded from
 
 ## Reverse engineering notes
 
-See [doc/Notes.md](doc/Notes.md).
+See [doc/Notes.md](doc/Notes.md) for my reverse engineering notes.
+
+Machine-readable register documentation can be found in
+[data/regs-jmb58x.yaml](data/regs-jmb58x.yaml). Run `make doc` in the root of
+this repository to generate XHTML documentation in
+[doc/generated](doc/generated), or view an online preview of the register
+documentation [here][htmlpreview].
 
 
 ## License
@@ -56,5 +62,6 @@ Except where otherwise stated:
 [python-markdown]: https://python-markdown.github.io/
 [pyyaml]: https://pyyaml.org/
 [station-drivers]: https://www.station-drivers.com/index.php/en/component/remository/Drivers/Jmicron/JMB585-Sata-Controller/Jmicron-JMB585-Sata-Controller-Firmware-Version-255.00.00.20/lang,en-gb/
+[htmlpreview]: https://htmlpreview.github.io/?https://github.com/cyrozap/jmb58x-re/blob/master/tools/doc-preview.html
 [license]: LICENSE.txt
 [cc-by-sa]: https://creativecommons.org/licenses/by-sa/4.0/
