@@ -31,9 +31,9 @@ def main() -> None:
     parser.add_argument("image", type=str, help="The JMB58x flash image.")
     args = parser.parse_args()
 
-    image: bytes = open(args.image, 'rb').read()
+    image: bytes = open(args.image, "rb").read()
 
-    did, vid = struct.unpack_from('<HH', image, 0)
+    did, vid = struct.unpack_from("<HH", image, 0)
     print("PCI ID: {:04x}:{:04x}".format(vid, did))
 
     offset: int = 8
@@ -48,13 +48,13 @@ def main() -> None:
         yaml_path: pathlib.Path = pathlib.Path(args.data_dir) / "regs-jmb58x.yaml"
 
         import yaml  # type: ignore[import-untyped]
-        doc = yaml.safe_load(open(yaml_path, 'r'))
-        registers: dict[str, list] = doc.get('registers', dict())
+        doc = yaml.safe_load(open(yaml_path, "r"))
+        registers: dict[str, list] = doc.get("registers", dict())
         for space in reg_names.keys():
             for reg in registers.get(space, []):
-                start = reg['start']
-                end = reg['end']
-                name = reg['name']
+                start = reg["start"]
+                end = reg["end"]
+                name = reg["name"]
                 reg_names[space].append((start, end, name))
     except FileNotFoundError:
         pass
@@ -76,7 +76,7 @@ def main() -> None:
         return ""
 
     print("Instruction  |  Data")
-    for instr, data in struct.iter_unpack('<II', header_data):
+    for instr, data in struct.iter_unpack("<II", header_data):
         if args.ignore_counter:
             instr = instr & 0x0fffffff
         info: str = ""
@@ -121,7 +121,7 @@ def main() -> None:
             break
 
     if offset < len(image):
-        print("Header version: {}.{}.{}.{}".format(*struct.unpack_from('BBBB', image, offset)))
+        print("Header version: {}.{}.{}.{}".format(*struct.unpack_from("BBBB", image, offset)))
 
 
 if __name__ == "__main__":
