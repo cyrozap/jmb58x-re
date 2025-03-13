@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: 0BSD
 
-# Copyright (C) 2022-2024 by Forest Crossman <cyrozap@gmail.com>
+# Copyright (C) 2022-2025 by Forest Crossman <cyrozap@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for
 # any purpose with or without fee is hereby granted.
@@ -21,9 +21,9 @@ import pathlib
 import struct
 
 
-def main():
-    project_dir = pathlib.Path(__file__).resolve().parents[1]
-    default_data_dir = str(project_dir/"data")
+def main() -> None:
+    project_dir: pathlib.Path = pathlib.Path(__file__).resolve().parents[1]
+    default_data_dir: str = str(project_dir/"data")
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--data-dir", type=str, default=default_data_dir, help="The YAML data directory. Default is \"{}\"".format(default_data_dir))
@@ -31,25 +31,25 @@ def main():
     parser.add_argument("image", type=str, help="The JMB58x flash image.")
     args = parser.parse_args()
 
-    image = open(args.image, 'rb').read()
+    image: bytes = open(args.image, 'rb').read()
 
     did, vid = struct.unpack_from('<HH', image, 0)
     print("PCI ID: {:04x}:{:04x}".format(vid, did))
 
-    offset = 8
-    header_data = image[offset:]
+    offset: int = 8
+    header_data: bytes = image[offset:]
 
-    reg_names = {
+    reg_names: dict[str, list[tuple[int, int, str]]] = {
         "bar5": [],
         "cfg": [],
         "reg": [],
     }
     try:
-        yaml_path = pathlib.Path(args.data_dir) / "regs-jmb58x.yaml"
+        yaml_path: pathlib.Path = pathlib.Path(args.data_dir) / "regs-jmb58x.yaml"
 
-        import yaml
+        import yaml  # type: ignore[import-untyped]
         doc = yaml.safe_load(open(yaml_path, 'r'))
-        registers = doc.get('registers', dict())
+        registers: dict[str, list] = doc.get('registers', dict())
         for space in reg_names.keys():
             for reg in registers.get(space, []):
                 start = reg['start']
@@ -61,7 +61,7 @@ def main():
     except ModuleNotFoundError:
         pass
 
-    def get_reg_name(space, addr):
+    def get_reg_name(space: str, addr: int) -> str:
         for start, end, name in reg_names[space]:
             reg_size = end + 1 - start
             if reg_size <= 4:
@@ -79,7 +79,7 @@ def main():
     for instr, data in struct.iter_unpack('<II', header_data):
         if args.ignore_counter:
             instr = instr & 0x0fffffff
-        info = ""
+        info: str = ""
 
         if instr & (1 << 24):
             info += "  |  "
@@ -106,9 +106,9 @@ def main():
             info += "  |  "
             info += "Option ROM offset: 0x{:08x}".format(data)
 
-        mask = 0
+        mask: int = 0
         if instr & (1 << 19):
-            bytes_enabled = (instr >> 20) & 0xf
+            bytes_enabled: int = (instr >> 20) & 0xf
             for i in range(4):
                 if bytes_enabled & (1 << i):
                     mask |= 0xff << (8 * i)
