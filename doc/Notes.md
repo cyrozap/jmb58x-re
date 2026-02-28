@@ -110,7 +110,7 @@ functions. The commands I've found so far are defined as follows:
         - 1: PCI BAR5 MMIO
         - 2: PCI configuration space
         - 4: Internal registers
-      - `Bits [3:1]`: 1
+      - `Bits [3:1]`: 1 (`0b001`)
       - `Bit [0]`: Read-not-Write
         - 0: Write
         - 1: Read
