@@ -70,7 +70,7 @@ the chip.
       addresses are a multiple of four).
     - Writes at or above 0x1000 use register indices (not byte addresses).
 - The configuration sequence is terminated by a write to the Option ROM flash
-  address register (memory space 8).
+  byte-address register (memory space 8).
 
 
 ## Reading and Writing Flash over PCIe
