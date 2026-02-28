@@ -19,15 +19,18 @@ DOC_SOURCES := $(wildcard data/regs-*.yaml)
 DOC_TARGETS := $(DOC_SOURCES:data/%.yaml=doc/generated/%.xhtml)
 
 
-all: doc
+all: doc jmb58x_flash
 
 doc/generated/%.xhtml: data/%.yaml tools/generate_docs.py
 	python3 tools/generate_docs.py -o $@ $<
 
 doc: $(DOC_TARGETS)
 
+jmb58x_flash: tools/jmb58x_flash.c
+	$(CC) -O2 -Wall -Wextra -o $@ $<
+
 clean:
-	rm -f $(DOC_TARGETS)
+	rm -f $(DOC_TARGETS) jmb58x_flash
 
 
 .PHONY: clean doc
