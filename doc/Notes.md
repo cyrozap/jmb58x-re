@@ -22,8 +22,8 @@ These notes reflect my current understanding of how everything works.
   - This is JMicron's PCI vendor ID.
 - The next four bytes are never read.
 - The configuration sequence starts at byte 8.
-- The Option ROM is stored at an arbirtary, absolute offset in the flash, and
-  that offset is set by a configuration instruction.
+- The Option ROM is stored at an arbirtary, absolute byte-offset in the flash,
+  and that offset is set by a configuration instruction.
 
 I'm not yet sure if the PCI device/vendor IDs are used as a magic to identify
 that the configuration sequence is present, or if it's used to set the IDs in
@@ -44,8 +44,8 @@ the chip.
   - 1: PCI BAR5 MMIO
   - 2: PCI configuration space
   - 4: Internal registers
-  - 8: Option ROM flash address register (appears to only access this one
-    register)
+  - 8: Option ROM flash byte-address register (this "memory space" appears to
+    only access this one register)
 - The next highest four bits of the instruction word (bits 23-20) are the byte
   enable bits for the data word.
   - If a bit is set, the corresponding byte from the data word is written to the
