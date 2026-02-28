@@ -16,8 +16,10 @@ These notes reflect my current understanding of how everything works.
 
 ## Flash Layout
 
-- The first two bytes are the little-endian PCI device ID.
-- The following two bytes are the little-endian PCI vendor ID.
+- The first two bytes are the 16-bit value `0x0585` in little-endian form.
+  - Please note that this value is used for both JMB585 and JMB582.
+- The following two bytes are the 16-bit value `0x197B` in little-endian form.
+  - This is JMicron's PCI vendor ID.
 - The next four bytes are never read.
 - The configuration sequence starts at byte 8.
 - The Option ROM is stored at an arbirtary, absolute offset in the flash, and
